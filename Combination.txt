@@ -1,0 +1,77 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar 06 15:32:00 2018
+
+@author: wWX462101
+"""
+from PIL import Image
+import random
+import os
+
+Ori_path = "D:\\DataCheck\\"
+savePath = "D:\\DataCheck\\Result\\"
+
+def Generate_Mixture(image_path,ID_name):
+    print image_path,ID_name
+    for filename in os.listdir(image_path):
+       # base_img = Image.open('C:\\Users\\wWX462101\\Desktop\\base.jpg')
+        #base_img=cv2.imread('C:\\Users\\wWX462101\\Desktop\\base.jpg')
+        if os.path.splitext(filename)[1] == '.db':
+            continue
+        region=Image.open(os.path.join(image_path,filename))
+#
+        
+   #     width,height=region.size
+    #    if width>=1920 or height>=1080:
+     #       continue
+     #   left=random.randint(0,1920-width);
+    
+  #     top=random.randint(0,1080-height);
+    
+     #   box=(left, top)
+   #     right=left+width
+  #     btm=top+height
+  #      base_img.paste(region, box)    
+        region.save(os.path.join(tmp_save_path,filename))
+        #labels.append(filename+'\n'+str(left)+' '+str(top)+' '+str(right)+' '+str(btm))
+        global counts
+        counts+=1
+        labels.append('/home/liguangrui/Combination/'+filename)
+        break
+    
+
+
+
+date_files = os.listdir(Ori_path)
+tdateCount = 0
+labels=[]
+counts=0
+for tdate in date_files:
+    print tdate
+    tdateCount = tdateCount + 1
+
+    temp_date_path = Ori_path + tdate +  "\\00+-patch\\"
+    tmp_save_path =  savePath + "\\"
+    print tmp_save_path,temp_date_path
+    if not os.path.exists(tmp_save_path):
+        os.mkdir(tmp_save_path)
+        
+    savePath = tmp_save_path
+
+    if not os.path.exists(savePath):
+        os.mkdir(savePath)
+
+    id_files = os.listdir(temp_date_path)
+    id_num = 0
+    for tid in id_files:
+        tmp_id_path = temp_date_path + tid + "\\"
+        
+        Generate_Mixture(tmp_id_path,tid)
+        id_num = id_num + 1 
+#f=open(tmp_save_path+'filename.txt','w')
+#for label in labels:
+ #   f.write(label)
+  #  f.write('\n')
+
+#f.close()
+print counts
