@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 26 17:14:45 2018
+
+@author: wWX462101
+"""
+import os
+import numpy as np
+import cv2
+ 
+dot_path="D:\\mkt\\dvd_query_dot_14\\"
+ori_path="D:\\mkt\\Market-1501-v15.09.15\\bounding_box_test\\"
+save_path_dot="D:\\pairs_query_dot_14\\"
+save_path_ori="D:\\pairs_query_14\\"
+
+def gene_pairs(dir_name,new_id):
+    id_dir=os.listdir(dot_path+dir_name)
+    count=0
+    current_path=os.path.join(dot_path,dir_name)
+    
+    for img_a in id_dir:
+        c_a=img_a[5:7]
+        #print img_a
+        for img_b in id_dir:
+            c_b=img_b[5:7]
+            #print img_b
+            #if count >2:
+                #continue
+            if c_a!=c_b:
+                new_name=new_id+str(count)
+                im_a=cv2.imread(current_path+"\\"+img_a,cv2.CV_LOAD_IMAGE_COLOR)
+                im_b=cv2.imread(current_path+"\\"+img_b,cv2.CV_LOAD_IMAGE_COLOR)
+                ori_a=cv2.imread(ori_path+"\\"+img_a,cv2.CV_LOAD_IMAGE_COLOR)
+                ori_b=cv2.imread(ori_path+"\\"+img_b,cv2.CV_LOAD_IMAGE_COLOR)
+                print img_a
+                combined1=np.concatenate([im_a, im_b], 1)
+
+                cv2.imwrite(save_path_dot+new_name+'.jpg', combined1)
+
+                ori_combined1=np.concatenate([ori_a, ori_b], 1)
+
+                cv2.imwrite(save_path_ori+new_name+'.jpg', ori_combined1)
+                count+=1
+
+
+if not os.path.exists(save_path_dot):
+    os.mkdir(save_path_dot)
+if not os.path.exists(save_path_ori):
+    os.mkdir(save_path_ori)
+dirs=os.listdir(dot_path)
+dir_count=0
+for dir_ in dirs:
+    #if int(dir_)<600:
+     #   continue
+    #print dir_
+    new_id=str(dir_count).zfill(4)
+    print dir_+'='+new_id
+    gene_pairs(dir_,new_id)
+    dir_count+=1
+    
