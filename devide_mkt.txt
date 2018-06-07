@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 26 16:48:07 2018
+
+@author: wWX462101
+"""
+
+import os 
+import cv2
+
+Ori_path = "D:\\mkt\single_query_dot_unequal\\single_query_dot_unequal\\"
+savePath = "D:\\mkt\\dvd_query_dot_unequal\\"
+
+id_dir_list=[];
+splits=os.listdir(Ori_path)
+count=0
+if not os.path.exists(savePath):
+    os.mkdir(savePath)
+for filename in splits:
+    print(filename)
+    if filename[0:2]=='-1':
+        continue
+    idt=filename[0:4]
+    if idt not in id_dir_list:
+        id_dir_list.append(idt)
+        count+=1
+        os.mkdir(savePath+idt)
+    img=cv2.imread(os.path.join(Ori_path,filename))
+    cv2.imwrite(os.path.join(savePath,idt,filename),img)
+    
+print (id_dir_list)
+print (count)
+    
